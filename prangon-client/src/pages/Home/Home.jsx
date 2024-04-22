@@ -1,6 +1,5 @@
 import React from "react";
 import "./Home.css";
-import Typewriter from "../../components/Typewriter";
 
 export default function Home() {
     const [user, setUser] = React.useState("");
