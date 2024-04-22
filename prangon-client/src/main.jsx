@@ -15,12 +15,28 @@ import "@fontsource/roboto/700.css";
 // Imported routes
 import Root from "./routes/Root";
 import ErrorPage from "./errorPage";
+import Home from "./pages/Home/Home";
 
 const router = createBrowserRouter([
     {
         path: "/",
+        element: <Home />,
+
+    },
+    {
+        path: "/app",
         element: <Root />,
         errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "search",
+                element: <div>Search</div>,
+            },
+            {
+                path: "profile",
+                element: <div>Profile</div>,
+            },
+        ],
     },
 ]);
 

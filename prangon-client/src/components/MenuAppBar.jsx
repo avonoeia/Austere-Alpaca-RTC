@@ -10,6 +10,7 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from '@mui/icons-material/Search';
 
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function MenuAppBar() {
     const [auth, setAuth] = React.useState(true);
@@ -56,7 +57,7 @@ export default function MenuAppBar() {
                         component="div"
                         sx={{ flexGrow: 1 }}
                     >
-                        <span className="prangon-logo">Prangon</span>
+                        <Link to='/app'><span className="prangon-logo">Prangon</span></Link>
                     </Typography>
 
                     {auth && (
