@@ -15,7 +15,7 @@
         rgba(17, 39, 23, 0.78) 124.91%
     );
     position: relative;
-    z-index: -2;
+    z-index: 1;
     overflow: hidden;
 }
 
@@ -154,6 +154,7 @@ footer {
     position: fixed;
     left: 0;
     bottom: 0;
+    z-index: 2;
 }
 footer > div > p {
     margin: 0;

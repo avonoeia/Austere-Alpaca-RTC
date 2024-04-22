@@ -3,6 +3,13 @@ import "./Home.css";
 import Typewriter from "../../components/Typewriter";
 
 export default function Home() {
+    const [user, setUser] = React.useState("");
+    const [password, setPassword] = React.useState("");
+
+    const handleSignIn = () => {
+        console.log("Signing in button clicked.");
+    }
+
     return (
         <>
             <div className="main">
@@ -36,18 +43,33 @@ export default function Home() {
 
                         <hr />
                         <label htmlFor="email">Email or Username</label>
-                        <input type="email" id="email" />
+                        <input
+                            type="text"
+                            id="user"
+                            placeholder="@username or BracU email"
+                            value={user}
+                            onChange={(e) => setUser(e.target.value)}
+                        />
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" />
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="*******"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
 
-                        <button>Sign In</button>
+                        <button onClick={handleSignIn}>Sign In</button>
                     </div>
                 </div>
             </div>
             <footer>
                 <div>
                     <p>
-                        23.02.1: <span style={{ "fontFamily": "Rubik Bubbles" }}>Austere Alpaca.</span>
+                        23.02.1:{" "}
+                        <span style={{ fontFamily: "Rubik Bubbles" }}>
+                            Austere Alpaca.
+                        </span>
                     </p>
                 </div>
             </footer>
