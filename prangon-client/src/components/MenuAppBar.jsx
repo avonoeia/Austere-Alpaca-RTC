@@ -7,15 +7,19 @@ import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function MenuAppBar() {
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    console.log(location.pathname);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -26,30 +30,40 @@ export default function MenuAppBar() {
     };
 
     const redirectToSearch = () => {
+        if (location.pathname == "/app/search") {
+            navigate(-1);
+            return;
+        }
         navigate("search");
-    }
+    };
 
     const handleRedirectToProfile = () => {
         navigate("profile");
-    }
+    };
 
     const handleLogout = () => {
-        pass 
-    }
-
-    
+        pass;
+    };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar color="secondary" position="static">
-                <Toolbar>
+        <Box sx={{ width: "100%", flexGrow: 1 }}>
+            <AppBar
+                sx={{ boxShadow: "none" }}
+                color="primary"
+                position="static"
+            >
+                <Toolbar sx={{ width: "100%", maxWidth: "1280px", mx: "auto" }}>
                     <IconButton
                         size="large"
                         aria-label="search"
                         color="inherit"
                         onClick={redirectToSearch}
                     >
-                        <SearchIcon />
+                        {location.pathname == "/app/search" ? (
+                            <ArrowBackIcon />
+                        ) : (
+                            <SearchIcon />
+                        )}
                     </IconButton>
 
                     <Typography
@@ -57,7 +71,9 @@ export default function MenuAppBar() {
                         component="div"
                         sx={{ flexGrow: 1 }}
                     >
-                        <Link to='/app'><span className="prangon-logo">Prangon</span></Link>
+                        <Link to="/app">
+                            <span className="prangon-logo">Prangon</span>
+                        </Link>
                     </Typography>
 
                     {auth && (

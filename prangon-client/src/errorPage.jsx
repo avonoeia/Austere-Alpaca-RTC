@@ -36,7 +36,7 @@ export default function ErrorPage() {
                 <Typography variant="body-sm">
                     Error: <i>{error.statusText || error.message}</i>
                 </Typography>
-                <RouterLink to="/"><Button size="md">Back to home</Button></RouterLink>
+                <RouterLink to="/app"><Button size="md">Back to home</Button></RouterLink>
             </Box> 
         </main>
     );

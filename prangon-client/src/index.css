@@ -32,6 +32,8 @@ body {
     min-width: 320px;
     min-height: 100vh;
     /* background: linear-gradient( 107.1deg, #112717 53.06%, #112717 92.02%, rgba(17, 39, 23, 0.78) 124.91% ); */
+    background-color: #101010;
+    color: #ebffea;
 }
 
 main {
@@ -48,18 +50,18 @@ h1 {
 }
 
 .prangon-logo {
-    color: #f614b8;
-    background-image: linear-gradient(
+    color: #79ffb7;
+    /* background-image: linear-gradient(
         to right top,
-        #051937,
-        #004d7a,
-        #008793,
+        #09ff00,
+        #c8ff00,
+        #fffc4e,
         #00bf72,
         #a8eb12
-    );
-    background-clip: text;
+    ); */
+    /* background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
     font-family: Helvetica, sans-serif;
     font-size: 32px;
     font-weight: 700;
