@@ -28,6 +28,14 @@ export default function MenuAppBar() {
         navigate("search");
     }
 
+    const handleRedirectToProfile = () => {
+        navigate("profile");
+    }
+
+    const handleLogout = () => {
+        pass 
+    }
+
     
 
     return (
@@ -78,11 +86,11 @@ export default function MenuAppBar() {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>
+                                <MenuItem onClick={handleRedirectToProfile}>
                                     Profile
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    My account
+                                <MenuItem onClick={handleLogout}>
+                                    Logout
                                 </MenuItem>
                             </Menu>
                         </div>
