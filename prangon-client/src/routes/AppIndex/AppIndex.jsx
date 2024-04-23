@@ -5,8 +5,11 @@ import ChatIcon from "@mui/icons-material/Chat";
 import GroupIcon from "@mui/icons-material/Group";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 export default function AppIndex() {
+    const navigateTo = useNavigate();
+
     return (
         <>
             <Box
@@ -19,10 +22,10 @@ export default function AppIndex() {
                 }}
             >
                 <IconButton
-                    // size="large"
+                    size="large"
                     aria-label="Direct Messeges"
                     color="inherit"
-                    // onClick={redirectToSearch}
+                    onClick={e => navigateTo("dms")}
                     sx = {{display: "flex", flexDirection: "column", flexGrow: 1}}
                 >
                     <ChatIcon fontSize="large"/>
@@ -30,9 +33,9 @@ export default function AppIndex() {
                 </IconButton>
                 <IconButton
                     size="large"
-                    aria-label="Direct Messeges"
+                    aria-label="groups"
                     color="inherit"
-                    // onClick={redirectToSearch}
+                    onClick={e => navigateTo("groups")}
                     sx = {{display: "flex", flexDirection: "column", flexGrow: 1}}
                 >
                     <GroupIcon fontSize="large"/>
@@ -40,9 +43,9 @@ export default function AppIndex() {
                 </IconButton>
                 <IconButton
                     size="large"
-                    aria-label="Direct Messeges"
+                    aria-label="sections"
                     color="inherit"
-                    // onClick={redirectToSearch}
+                    onClick={e => navigateTo("sections")}
                     sx = {{display: "flex", flexDirection: "column", flexGrow: 1}}
                 >
                     <WorkspacesIcon fontSize="large"/>

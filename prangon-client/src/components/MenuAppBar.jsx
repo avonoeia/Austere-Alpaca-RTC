@@ -53,6 +53,18 @@ export default function MenuAppBar() {
                 position="static"
             >
                 <Toolbar sx={{ width: "100%", maxWidth: "1280px", mx: "auto" }}>
+                    {location.pathname !== "/app" &&
+                        location.pathname !== "/app/search" && (
+                            <IconButton
+                                size="large"
+                                aria-label="home"
+                                color="inherit"
+                                onClick={() => navigate(-1)}
+                            >
+                                <ArrowBackIcon />
+                            </IconButton>
+                        )}
+
                     <IconButton
                         size="large"
                         aria-label="search"
