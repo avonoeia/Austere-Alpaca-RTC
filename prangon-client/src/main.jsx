@@ -18,6 +18,7 @@ import ErrorPage from "./errorPage";
 import Home from "./pages/Home/Home";
 import Search from "./routes/Search/Search";
 import AppIndex from "./routes/AppIndex/AppIndex";
+import Post from "./routes/Post/Post";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         loader: rootLoader,
         children: [
             { index: true, element: <AppIndex /> },
+            {
+                path: "post",
+                element: <Post />,
+            },
             {
                 path: "search",
                 element: <Search />,
@@ -52,6 +57,12 @@ const theme = createTheme({
         },
         secondary: {
             main: "#ebffea",
+        },
+        shade: {
+            main: "1e1e1e"
+        },
+        error: {
+            main: yellow[500],
         },
     },
 });
