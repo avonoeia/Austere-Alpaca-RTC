@@ -62,6 +62,17 @@ async function userEmailVerification1(req, res) {
 async function userEmailVerification2(req, res) {
     let { email, code } = req.body;
     email = email.toLowerCase();
+    
+    const client = createClient();
+    client.on("error", (err) => console.log("Redis Client Error", err));
+
+    await client
+        .connect()
+        .then(async () => {
+            console.log("Connected to Redis");
+            await client.set("name", "naveed", {'EX': 60})
+        })
+        .catch((err) => console.log(err));
 
     try {
         // Get the code from Redis
