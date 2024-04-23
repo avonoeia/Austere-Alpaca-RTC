@@ -32,7 +32,7 @@ export default function ErrorPage() {
             >
                 <Typography variant="h1">Oops!</Typography>
                 <Typography variant="h6" component="h2">
-                    Looks like something went wrong!
+                    Something went wrong!
                 </Typography>
                 <Typography variant="body-sm">
                     Error: <i>{error.statusText || error.message}</i>
