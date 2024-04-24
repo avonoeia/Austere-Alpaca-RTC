@@ -30,7 +30,6 @@ async function userEmailVerification1(req, res) {
         .connect()
         .then(async () => {
             console.log("Connected to Redis");
-            await client.set("name", "naveed", {'EX': 60})
         })
         .catch((err) => console.log(err));
 
@@ -45,13 +44,11 @@ async function userEmailVerification1(req, res) {
                 .json({ error: "Error sending email. Please try again." });
 
         // Save the code in Redis
-        await client.set(`verification_${email}`, `${code}`, { 'EX': 120 });
+        await client.set(`verification_${email}`, `${code}`, { EX: 120 });
 
-        return res
-            .status(200)
-            .json({
-                message: `We've sent an email to ${email} with your verifation code.`,
-            });
+        return res.status(200).json({
+            message: `We've sent an email to ${email} with your verifation code.`,
+        });
     } catch (err) {
         console.log(err);
         return res.status(400).json({ error: err.message });
@@ -62,7 +59,7 @@ async function userEmailVerification1(req, res) {
 async function userEmailVerification2(req, res) {
     let { email, code } = req.body;
     email = email.toLowerCase();
-    
+
     const client = createClient();
     client.on("error", (err) => console.log("Redis Client Error", err));
 
@@ -70,7 +67,6 @@ async function userEmailVerification2(req, res) {
         .connect()
         .then(async () => {
             console.log("Connected to Redis");
-            await client.set("name", "naveed", {'EX': 60})
         })
         .catch((err) => console.log(err));
 
@@ -79,19 +75,20 @@ async function userEmailVerification2(req, res) {
         const verificationCode = await client.get(`verification_${email}`);
 
         if (verificationCode == null)
-            return res
-                .status(400)
-                .json({
-                    error: "Verification code may have expired. Please request a new one.",
-                });
+            return res.status(400).json({
+                error: "Verification code may have expired. Please request a new one.",
+            });
 
         // Check if the code is correct
         if (verificationCode === code) {
             // Create a new entry in Redis
-            await client.set(`verified_${email}`, "true");
-            return res
-                .status(200)
-                .json({ message: "User verification successful." });
+            await client.set(`verified_${email}`, "true", { EX: 1200 });
+            // Create temporary token
+            const token = createToken(email);
+            return res.status(200).json({
+                message: "User verification successful. Finish signup within 20 minutes.",
+                temporaryToken: token,
+            });
         } else {
             return res
                 .status(400)
@@ -103,21 +100,59 @@ async function userEmailVerification2(req, res) {
     }
 }
 
+async function verifyBeforeSignup(req, res) {
+    const { authorization } = req.headers;
+    const client = createClient();
+    client.on("error", (err) => console.log("Redis Client Error", err));
+
+    await client
+        .connect()
+        .then(async () => {
+            console.log("Connected to Redis");
+        })
+        .catch((err) => console.log(err));
+
+    if (!authorization) {
+        return res
+            .status(401)
+            .json({ error: "Access denied. Please verify your email first." });
+    }
+
+    const token = authorization.split(" ")[1];
+    try {
+        const { id } = jwt.verify(token, process.env.SECRET);
+        let email = id
+        const isVerified = await client.get(`verified_${email}`);
+        if (isVerified === null)
+            return res.status(400).json({
+                error: "Your email is unverified or verification may have expired. Please verify your email first.",
+            });
+        client.del(`verified_${email}`);
+        return true;
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            error: "Invalid authentication token. Access denied.",
+        });
+    }
+}
+
 // Handles user signup, i.e create the user document in db
 async function userSignup(req, res) {
-    const { email } = req;
-    const isVerified = await client.get(`verified_${email}`);
+    const { email } = req.body;
 
-    if (isVerified === null)
-        return res
-            .status(400)
-            .json({ error: "Please verify your email first." });
+    const isVerified = await verifyBeforeSignup(req, res);
+
+
+    if (isVerified !== true) {
+        return 
+    }
 
     try {
         const user = await User.signup(req.body);
 
         const token = createToken(user._id);
-        return res.status(200).json({ token });
+        return res.status(200).json({ "message": "Signup successful. Welcome to Prangon!", token });
     } catch (err) {
         console.log(err);
         return res.status(400).json({ error: err.message });

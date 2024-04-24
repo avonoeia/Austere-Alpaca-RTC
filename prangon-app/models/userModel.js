@@ -22,7 +22,7 @@ const userSchema = new Schema({
         required: true,
         trim: true
     },
-    bracu_email: {
+    personal_email: {
         type: String,
         required: true,
         unique: true,
@@ -42,7 +42,7 @@ const userSchema = new Schema({
     about: {
         type: String,
         required: true,
-        default: ''
+        default: 'Hey there! I am using Prangon.'
     },
     invited_by: {
         type: String,
