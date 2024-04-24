@@ -1,4 +1,6 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
@@ -16,6 +18,18 @@ import Fab from '@mui/material/Fab';
 
 export default function AppIndex() {
     const navigateTo = useNavigate();
+    const {isLoading, isError, error, data} = useQuery({
+        queryKey: ["posts"],
+        queryFn: async () => {
+            const res = await fetch("", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                }
+            });
+            return res.json();
+        }
+        // onSuccess: () => {}
+    })
 
     return (
         <>

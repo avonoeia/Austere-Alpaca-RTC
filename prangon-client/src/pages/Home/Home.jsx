@@ -21,13 +21,13 @@ export default function Home() {
                     >
                         Currently served with a side of baked bugs.{" "}
                         <a
-                            href="learn-more"
+                            href="signup"
                             style={{
                                 color: "inherit",
                                 textDecoration: "underline",
                             }}
                         >
-                            Learn more
+                            Join
                         </a>
                     </span>
                 </h1>

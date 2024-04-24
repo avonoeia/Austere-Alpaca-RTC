@@ -14,7 +14,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function MenuAppBar() {
-    const [auth, setAuth] = React.useState(true);
+    const [auth, setAuth] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate();
     const location = useLocation();
@@ -51,29 +51,13 @@ export default function MenuAppBar() {
                 position="static"
             >
                 <Toolbar sx={{ width: "100%", maxWidth: "1280px", mx: "auto" }}>
-                    {location.pathname !== "/app" &&
-                        location.pathname !== "/app/search" && (
-                            <IconButton
-                                size="large"
-                                aria-label="home"
-                                color="inherit"
-                                onClick={() => navigate(-1)}
-                            >
-                                <ArrowBackIcon />
-                            </IconButton>
-                        )}
-
                     <IconButton
                         size="large"
-                        aria-label="search"
+                        aria-label="home"
                         color="inherit"
-                        onClick={redirectToSearch}
+                        onClick={() => navigate(-1)}
                     >
-                        {location.pathname == "/app/search" ? (
-                            <ArrowBackIcon />
-                        ) : (
-                            <SearchIcon />
-                        )}
+                        <ArrowBackIcon />
                     </IconButton>
 
                     <Typography

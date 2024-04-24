@@ -9,7 +9,18 @@ function createToken(id) {
 }
 // Utility function checks valid BracU email
 function isValidBracUEmail(email) {
+    console.log(email)
     return email.endsWith("@g.bracu.ac.bd");
+}
+
+async function checkUniqueUsername(req, res) {
+    let { username } = req.body
+    console.log(username)
+    const flag = await User.findOne({"username": username})
+
+    if (!flag) return res.status(200)
+
+    return res.status(400).json({error: "Username already taken"})
 }
 
 // Handles user email verification step 1
@@ -78,7 +89,7 @@ async function userEmailVerification2(req, res) {
             return res.status(400).json({
                 error: "Verification code may have expired. Please request a new one.",
             });
-
+        
         // Check if the code is correct
         if (verificationCode === code) {
             // Create a new entry in Redis
@@ -182,4 +193,5 @@ module.exports = {
     userEmailVerification2,
     userSignup,
     userLogin,
+    checkUniqueUsername,
 };

@@ -2,10 +2,15 @@ import React from 'react';
 import MenuAppBar from '../components/MenuAppBar';
 import Container from '@mui/material/Container';
 // import Box from '@mui/material/Box';
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect } from "react-router-dom";
 
 export async function loader() {
-    return true; // Placeholder
+    const user = localStorage.getItem("user");
+    console.log(user)
+    if (!user) {
+        return redirect("/");
+    }
+    return true;
 }
 
 

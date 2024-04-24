@@ -47,7 +47,7 @@ const userSchema = new Schema({
     invited_by: {
         type: String,
         required: true,
-        default: 'Unknown'
+        default: 'None'
     },
     user_type: {
         type: String,
