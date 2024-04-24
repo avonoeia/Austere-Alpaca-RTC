@@ -27,6 +27,8 @@ import SignupRoot from "./routes/Signup/SignupRoot";
 import EnterEmail from "./routes/Signup/EnterEmail";
 import VerifyCode from "./routes/Signup/VerifyCode";
 import CheckUsername from "./routes/Signup/CheckUsername";
+import BackupEmailAndPassword from "./routes/Signup/BackupEmailAndPassword"
+import Welcome from "./routes/Signup/Welcome"
 
 import ErrorPage from "./errorPage";
 import Home from "./pages/Home/Home";
@@ -70,7 +72,21 @@ const router = createBrowserRouter([
             },
             {
                 path: "3",
-                element: <div>More data</div>,
+                element: <BackupEmailAndPassword />,
+            },
+            {
+                path: "welcome",
+                loader: () => {
+                    const temporaryToken = localStorage.getItem("temporaryItem")
+                    console.log(temporaryToken)
+                    if (temporaryToken == null) {
+                        console.log("Hello")
+                        return redirect('/')
+                    }
+
+                    return null
+                },
+                element: <Welcome />,
             },
         ],
     },

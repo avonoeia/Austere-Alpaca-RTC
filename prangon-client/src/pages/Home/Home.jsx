@@ -45,7 +45,7 @@ export default function Home() {
                         <input
                             type="text"
                             id="user"
-                            placeholder="@username or BracU email"
+                            placeholder="username or BracU email"
                             value={user}
                             onChange={(e) => setUser(e.target.value)}
                         />

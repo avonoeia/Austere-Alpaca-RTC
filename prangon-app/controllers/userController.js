@@ -15,10 +15,10 @@ function isValidBracUEmail(email) {
 
 async function checkUniqueUsername(req, res) {
     let { username } = req.body
-    console.log(username)
+
     const flag = await User.findOne({"username": username})
 
-    if (!flag) return res.status(200)
+    if (!flag) return res.status(200).json({message: "Username not taken"})
 
     return res.status(400).json({error: "Username already taken"})
 }

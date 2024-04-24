@@ -34,7 +34,8 @@ export default function EnterEmail() {
     const navigateTo = useNavigate();
     const { mutate, isPending, error, data } = useMutation({
         mutationFn: sendCodeForVerification,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            localStorage.setItem("temporaryToken", data.temporaryToken)
             navigateTo("/signup/2");
         },
         onError: (error) => {
@@ -44,7 +45,6 @@ export default function EnterEmail() {
 
     const handleSubmit = async () => {
         if (!code || isPending) return;
-        console.log("code1", code)
         mutate({email, code})
     }
 
@@ -74,7 +74,7 @@ export default function EnterEmail() {
                 <div className="prangon-logo">Code?</div>
                 <hr />
                 <input
-                    disable={isPending}
+                    disabled={isPending}
                     type="text"
                     placeholder="Enter the code we sent you"
                     value={code}

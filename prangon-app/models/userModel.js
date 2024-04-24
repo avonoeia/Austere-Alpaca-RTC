@@ -36,67 +36,54 @@ const userSchema = new Schema({
     },
     profile_picture: {
         type: String,
-        required: true,
         default: '/assets/profile-pictures/default.jpg'
     },
     about: {
         type: String,
-        required: true,
         default: 'Hey there! I am using Prangon.'
     },
     invited_by: {
         type: String,
-        required: true,
         default: 'None'
     },
     user_type: {
         type: String,
-        required: true,
         default: 'Default'
     },
     department: {
         type: String,
-        required: true,
         default: 'Unknown'
     },
     program: {
         type: String,
-        required: true,
         default: 'Unknown'
     },
     student_id: {
         type: String,
-        required: true,
         default: 'Unknown'
     },
     enrollment_year: {
         type: String,
-        required: true,
         default: 'Uknown'
     },
     rs_semester: {
         type: String,
-        required: true,
         default: 'Unknown'
     },
     courses_completed: {
         type: Array,
-        required: true,
         default: []
     },
     courses_in_progress: {
         type: Array,
-        required: true,
         default: []
     },
     following: {
         type: Array,
-        required: true,
         default: []
     },
     followers: {
         type: Array,
-        required: true,
         default: []
     }
 }, {

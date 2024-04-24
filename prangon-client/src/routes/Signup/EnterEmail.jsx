@@ -67,7 +67,7 @@ export default function EnterEmail() {
                 <div className="prangon-logo">Hi!</div>
                 <hr />
                 <input
-                    disable={isPending}
+                    disabled={isPending}
                     type="text"
                     placeholder="Enter your BracU email"
                     value={email}
