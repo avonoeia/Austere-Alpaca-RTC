@@ -5,10 +5,17 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import UploadIcon from '@mui/icons-material/Upload';
 
-export default function Search() {
+import Upload from "./Upload";
+
+export default function Post() {
+    const [image, setImage] = React.useState("")
+    const [postText, setPostText] = React.useState("")
+
+    const handlePostSubmission = async () => {
+        pass
+    }
+
     return (
         <>
             <Container sx={{ my: 2 }} maxWidth="sm">
@@ -32,21 +39,17 @@ export default function Search() {
                                 width: "100%",
                                 height: "180px",
                             }}
+                            value={postText}
+                            onChange={e => setPostText(e.target.value)}
                         />
                     </Stack>
+                    <Upload image={image} setImage={setImage} />
                     <Stack sx={{ mt: 4 }} direction="row" spacing={1}>
-                        <IconButton
-                            sx={{ mt: 4, width: "10%" }}
-                            color="secondary"
-                            size="small"
-                        >
-
-                            <UploadIcon />
-                        </IconButton>
                         <Button
                             variant="contained"
                             sx={{ mt: 4, width: "100%" }}
                             color="secondary"
+                            onClick={handlePostSubmission}
                         >
                             Post
                         </Button>

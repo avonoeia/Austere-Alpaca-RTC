@@ -1,8 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { teal, yellow } from "@mui/material/colors";
+import { red, teal, yellow } from "@mui/material/colors";
 // import { teal } from '@mui/material/colors';
 import "./index.css";
 
@@ -59,18 +63,23 @@ const theme = createTheme({
             main: "#ebffea",
         },
         shade: {
-            main: "1e1e1e"
+            main: "1e1e1e",
         },
         error: {
             main: yellow[500],
+        },
+        warning: {
+            main: red[500],
         },
     },
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <RouterProvider router={router} />
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={theme}>
+                <RouterProvider router={router} />
+            </ThemeProvider>
+        </QueryClientProvider>
     </React.StrictMode>
 );
