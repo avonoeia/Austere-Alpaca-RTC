@@ -142,5 +142,49 @@ userSchema.statics.login = async function (email, password) {
     return user
 }
 
+userSchema.statics.getFollowedPosts = async function(currentUserUsername) {
+    const pipeline = [
+        {
+          $match: { username: currentUserUsername.username }, // Match the current user
+        },
+        {
+          $unwind: '$following', // Unwind the following array
+        },
+        {
+          $lookup: {
+            from: 'posts', // Lookup in the posts collection
+            localField: 'following', // Match username in following with author field in posts
+            foreignField: 'username', // Field in posts collection storing the author username
+            as: 'followedPosts', // Name for the joined posts array
+          },
+        },
+        {
+          $unwind: '$followedPosts', // Unwind the joined posts array (might be empty for some users)
+        },
+        {
+          $match: { 'followedPosts.deleted': { $ne: true } }, // Filter out deleted posts (optional)
+        },
+        {
+          $sort: { 'followedPosts.createdAt': -1 }, // Sort by createdAt descending
+        },
+        {
+          $project: { followedPosts: 1  }, // Remove unnecessary fields
+        },
+        {
+          $limit: 100, // Limit the final results to 100 documents
+        },
+      ];
+    
+      // 3. Execute the aggregation pipeline
+      const results = await this.aggregate(pipeline);
+    
+      // 4. Extract the posts array from each result document
+      const followedPosts = results.map((result) => result.followedPosts);
+    
+      // 5. Flatten the array of arrays (optional, if you want all posts in a single array)
+      return [].concat(...followedPosts);
+    
+  };
+
 
 module.exports = mongoose.model('User', userSchema)

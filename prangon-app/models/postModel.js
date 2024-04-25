@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const User = require("./userModel");
 
 const postSchema = new Schema(
     {
@@ -67,5 +68,6 @@ postSchema.statics.deletePost = async function ({ post_id }) {
 
     return post;
 };
+
 
 module.exports = mongoose.model("Posts", postSchema);

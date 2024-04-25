@@ -3,11 +3,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import CommentIcon from "@mui/icons-material/Comment";
 import PersonIcon from "@mui/icons-material/Person";
-import CardActions from '@mui/material/CardActions';
+import CardActions from "@mui/material/CardActions";
 import { useNavigate } from "react-router-dom";
 
 export default function PostCard() {
@@ -22,10 +24,15 @@ export default function PostCard() {
                 borderRadius: "5px",
             }}
         >
-            <CardActionArea>
-                <CardActions onClick={e => location.href = "https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/438204827_844400087728716_1645927507429381317_n.jpg?stp=dst-jpg_p526x296&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHoEOW3FaE3N6yyVpooToMg7dn_9UANXAnt2f_1QA1cCbaxSvlq9rJi2ogKvMEpT0G1VwEYL1UNYy_3kFMFUj3j&_nc_ohc=PC9vAKXHw9cAb5SnLt7&_nc_ht=scontent.fdac99-1.fna&oh=00_AfCQ9I7V9s87JmLAZ0rc4nj6hC58P1hNeUWh7OUfF2HCdQ&oe=662D5271"}>
+            {/* <CardActionArea> */}
+                <CardActions
+                    onClick={(e) =>
+                        (location.href =
+                            "https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/438204827_844400087728716_1645927507429381317_n.jpg?stp=dst-jpg_p526x296&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHoEOW3FaE3N6yyVpooToMg7dn_9UANXAnt2f_1QA1cCbaxSvlq9rJi2ogKvMEpT0G1VwEYL1UNYy_3kFMFUj3j&_nc_ohc=PC9vAKXHw9cAb5SnLt7&_nc_ht=scontent.fdac99-1.fna&oh=00_AfCQ9I7V9s87JmLAZ0rc4nj6hC58P1hNeUWh7OUfF2HCdQ&oe=662D5271")
+                    }
+                >
                     <CardMedia
-                        component="img"      
+                        component="img"
                         image="https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/438204827_844400087728716_1645927507429381317_n.jpg?stp=dst-jpg_p526x296&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHoEOW3FaE3N6yyVpooToMg7dn_9UANXAnt2f_1QA1cCbaxSvlq9rJi2ogKvMEpT0G1VwEYL1UNYy_3kFMFUj3j&_nc_ohc=PC9vAKXHw9cAb5SnLt7&_nc_ht=scontent.fdac99-1.fna&oh=00_AfCQ9I7V9s87JmLAZ0rc4nj6hC58P1hNeUWh7OUfF2HCdQ&oe=662D5271"
                         alt="green iguana"
                     />
@@ -63,7 +70,26 @@ export default function PostCard() {
                         except Antarctica
                     </Typography>
                 </CardContent>
-            </CardActionArea>
+                <CardActions>
+                    <Stack
+                        sx={{
+                            color: "secondary.main",
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "space-around",
+                        }}
+                        direction="row"
+                        spacing={2}
+                    >
+                        <IconButton>
+                            <ThumbUpIcon color="secondary" />
+                        </IconButton>
+                        <IconButton onClick={(e) => navigateTo("post/abc1234")}>
+                            <CommentIcon color="secondary" />
+                        </IconButton>
+                    </Stack>
+                </CardActions>
+            {/* </CardActionArea> */}
         </Card>
     );
 }
