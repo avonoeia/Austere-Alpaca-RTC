@@ -6,7 +6,6 @@ import { Outlet, redirect } from "react-router-dom";
 
 export async function loader() {
     const user = localStorage.getItem("user");
-    console.log(user)
     if (!user) {
         return redirect("/");
     }

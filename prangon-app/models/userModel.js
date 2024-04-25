@@ -119,8 +119,8 @@ userSchema.statics.signup = async function (reqBody) {
     return user
 }
 
-userSchema.statics.login = async function (reqBody) {
-    const { email, password } = reqBody
+userSchema.statics.login = async function (email, password) {
+        
     if (!email || !password) {
         throw Error('All fields are required')
     }

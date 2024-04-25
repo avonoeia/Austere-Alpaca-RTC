@@ -1,12 +1,17 @@
 import React from "react";
 import "./Home.css";
 
+import { useLogin } from "../../hooks/useLogin"
+
 export default function Home() {
-    const [user, setUser] = React.useState("");
+    const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const { login, isLoading, error } = useLogin()
+
 
     const handleSignIn = () => {
-        console.log("Signing in button clicked.");
+        if (isLoading) return
+        login(email, password)
     }
 
     return (
@@ -27,7 +32,7 @@ export default function Home() {
                                 textDecoration: "underline",
                             }}
                         >
-                            Join
+                            Join now
                         </a>
                     </span>
                 </h1>
@@ -41,13 +46,13 @@ export default function Home() {
                         <div className="prangon-logo">Prangon</div>
 
                         <hr />
-                        <label htmlFor="email">Email or Username</label>
+                        <label htmlFor="email">BracU Email</label>
                         <input
                             type="text"
                             id="user"
-                            placeholder="username or BracU email"
-                            value={user}
-                            onChange={(e) => setUser(e.target.value)}
+                            placeholder="Enter your BracU email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <label htmlFor="password">Password</label>
                         <input
@@ -58,7 +63,8 @@ export default function Home() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
 
-                        <button onClick={handleSignIn}>Sign In</button>
+                        {error && <p style={{ paddingTop: "10px", color: "red" }}>{error}</p>}
+                        <button onClick={handleSignIn}>{isLoading ? "Loading..." : "Sign In"}</button>
                     </div>
                 </div>
             </div>

@@ -85,7 +85,7 @@ export default function BackupEmailAndPassword() {
                     style={{ margin: "5px 0px" }}
                 />
                 <input
-                    type="text"
+                    type="password"
                     placeholder="Enter your password"
                     value={userData.password}
                     name="password"
@@ -93,7 +93,7 @@ export default function BackupEmailAndPassword() {
                     style={{ margin: "5px 0px" }}
                 />
                 <input
-                    type="text"
+                    type="password"
                     placeholder="Re-enter your password"
                     value={passwordConfirmation}
                     name="confirm_password"

@@ -175,7 +175,7 @@ async function userLogin(req, res) {
     const { email, password } = req.body;
 
     console.log("Hit registered at userLogin controller");
-
+    console.log(email, password)
     try {
         const user = await User.login(email, password);
 
