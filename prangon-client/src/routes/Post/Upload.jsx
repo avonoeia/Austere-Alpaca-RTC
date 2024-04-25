@@ -21,6 +21,7 @@ export default function Upload(props) {
             {!image.length? <input
                 type="file"
                 id="file"
+                name="post_image_content"
                 style={{ width: "50%", marginTop: "20px", "background": "transparent" }}
                 onChange={handleImage}
             /> : ""}

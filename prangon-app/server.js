@@ -1,8 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+// const bodyParser = require('body-parser');
+
+const requireAuth = require('./middlewares/requireAuth')
 
 const userRoutes = require('./routes/user')
+const postRoutes = require('./routes/posts')
 
 // express app
 app = express();
@@ -10,9 +14,13 @@ app = express();
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.use('/api/users', userRoutes)
+// All protected routes
+app.use(requireAuth)
+app.use('/api/posts', postRoutes)
 
 // Connecting to MongoDB database
 mongoose
