@@ -5,16 +5,57 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 
 import Upload from "./Upload";
 
+import { useMutation } from "@tanstack/react-query";
+
+const createPostRequest = async (body) => {
+    let formData = createForm(body.imageFile, body.postText);
+    const user = JSON.parse(localStorage.getItem("user"))
+    const response = await fetch(`${import.meta.env.VITE_API_POST_CREATE_POST}`, {
+        method: "POST",
+        headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+        },
+        body: formData,
+    });
+    const responseData = await response.json();
+    if (response.ok) return responseData;
+
+    throw new Error(responseData.error);
+};
+
+function createForm(imageFile, postText) {
+    const formData = new FormData();
+    formData.append("post_image_content", imageFile);
+    formData.append("post_text_content", postText);
+    formData.append("username", JSON.parse(localStorage.getItem("user")).username);
+    return formData;
+}
+
 export default function Post() {
-    const [image, setImage] = React.useState("")
-    const [postText, setPostText] = React.useState("")
+    const [image, setImage] = React.useState("");
+    const [imageFile, setImageFile] = React.useState("");
+    const [postText, setPostText] = React.useState("");
+
+    const { mutate, isPending, error, data } = useMutation({
+        mutationFn: createPostRequest,
+        onSuccess: () => {
+            console.log("Post created successfully");
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
 
     const handlePostSubmission = async () => {
-        pass
-    }
+        if (!postText && !imageFile) return;
+        if (isPending) return;
+        mutate({ imageFile, postText });
+    };
 
     return (
         <>
@@ -40,18 +81,27 @@ export default function Post() {
                                 height: "180px",
                             }}
                             value={postText}
-                            onChange={e => setPostText(e.target.value)}
+                            onChange={(e) => setPostText(e.target.value)}
                         />
                     </Stack>
-                    <Upload image={image} setImage={setImage} />
+                    <Upload image={image} setImage={setImage} imageFile={imageFile} setImageFile={setImageFile} />
+                    {error && (
+                        <Typography
+                            variant="body1"
+                            sx={{ pt: 1, color: "error.main" }}
+                        >
+                            {error.message}
+                        </Typography>
+                    )}
                     <Stack sx={{ mt: 4 }} direction="row" spacing={1}>
                         <Button
                             variant="contained"
                             sx={{ mt: 4, width: "100%" }}
                             color="secondary"
                             onClick={handlePostSubmission}
+                            disabled={isPending}
                         >
-                            Post
+                            {isPending ? "Loading..." : "Post"}
                         </Button>
                     </Stack>
                 </Box>

@@ -3,13 +3,14 @@ import { Button } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function Upload(props) {
-    const { image, setImage } = props
+    const { image, setImage, imageFile, setImageFile } = props
 
     const handleImage = (e) => {
         const file = e.target.files[0]
         const reader = new FileReader()
         reader.onloadend = () => {
             setImage(reader.result)
+            setImageFile(file)
         }
         reader.readAsDataURL(file)
     }

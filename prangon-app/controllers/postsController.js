@@ -15,7 +15,7 @@ async function createPost(req, res) {
             });
         }
 
-        const {
+        let {
             username,
             author_name,
             post_title,
@@ -24,6 +24,8 @@ async function createPost(req, res) {
             topic,
             likes,
         } = req.body;
+
+        author_name = req.user.name
     
         try {
             const post = await Post.create({
