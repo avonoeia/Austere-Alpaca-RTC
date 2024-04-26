@@ -8,6 +8,10 @@ import MyChats from "../components/MyChats";
 import { useChatState } from "../context/ChatProvider";
 
 const Chatpage = () => {
+
+  //debug > If user's logged in ...
+  console.log(localStorage.getItem("userInfo"))
+
   const [fetchAgain, setFetchAgain] = useState(false);
   const { user } = useChatState();
 
