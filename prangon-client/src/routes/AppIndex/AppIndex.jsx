@@ -8,7 +8,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import GroupIcon from "@mui/icons-material/Group";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
 
 import Stack from "@mui/material/Stack";
 import Skeleton from "@mui/material/Skeleton";
@@ -66,7 +66,8 @@ export default function AppIndex() {
                             size="large"
                             aria-label="Direct Messeges"
                             color="inherit"
-                            onClick={(e) => navigateTo("dms")}
+                            href="http://localhost:3000/"
+                            target="_blank"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column",
@@ -82,7 +83,8 @@ export default function AppIndex() {
                             size="large"
                             aria-label="groups"
                             color="inherit"
-                            onClick={(e) => navigateTo("groups")}
+                            href="http://localhost:3000/"
+                            target="_blank"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column",
@@ -98,7 +100,8 @@ export default function AppIndex() {
                             size="large"
                             aria-label="sections"
                             color="inherit"
-                            onClick={(e) => navigateTo("sections")}
+                            href="http://localhost:3000/"
+                            target="_blank"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column",
@@ -123,15 +126,6 @@ export default function AppIndex() {
                                     />
                                 ))
                             }
-
-                            {/* <PostCard />
-                            <PostCard />
-                            <PostCard />
-                            <PostCard />
-                            <PostCard />
-                            <PostCard />
-                            <PostCard />
-                            <PostCard /> */}
                         </Stack>
                     </Container>}
                 </>

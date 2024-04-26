@@ -1,7 +1,7 @@
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
 const Comment = require("../models/commentModel");
-let upload = require("/home/naveed/Prangon/prangon-app/middlewares/postUploader.js");
+let upload = require("../middlewares/postUploader.js");
 const multer = require("multer");
 upload = upload.single("post_image_content");
 

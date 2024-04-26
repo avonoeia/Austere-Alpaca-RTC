@@ -44,7 +44,7 @@ export default function UserProfile() {
 
     const handleFollowUnfollow = async () => {
         const res = await fetch(
-            `${import.meta.env.VITE_API_FOLLOW_UNFOLLOW}/${data.user._id}`,
+            `${import.meta.env.VITE_API_POST_FOLLOW_UNFOLLOW}${data.user.username}`,
             {
                 method: "POST",
                 headers: {
@@ -54,9 +54,14 @@ export default function UserProfile() {
         );
         if (res.ok) {
             const data = await res.json();
-            setData(data);
+            setData(prevData => ({
+                ...prevData,
+                isFollowing: !data.isFollowing
+            }));
         }
     };
+
+    console.log(data)
 
     return (
         <>
@@ -88,11 +93,11 @@ export default function UserProfile() {
                                     />
                                 </Avatar>
                                 <Stack
-                                    sx={{ textAlign: "left", width: "100%" }}
+                                    sx={{ textAlign: "left", width: "100%", overflow: "hidden"}}
                                     direction="column"
                                     spacing={2}
                                 >
-                                    <Typography variant="h2">
+                                    <Typography variant="h3">
                                         {data.user.name}
                                     </Typography>
                                     <Typography
@@ -116,11 +121,16 @@ export default function UserProfile() {
                                 }
                             </Stack>
                             <Stack direction="column" spacing={2} sx={{mt: "20px"}}>
-    
-                                {data.posts.map((post) => (
-                                    <PostCard key={post._id} post={post} />
-                                ))}
+                                {
+                                    data.posts.length > 0 ? (
+                                    <>
+                                        {data.posts.map((post) => (
+                                        <PostCard key={post._id} post={post} />
+                                        ))}
+                                    </>) : "No posts"
+                                }
                             </Stack>
+                                
                         </>
                     )}
                 </>

@@ -22,8 +22,8 @@ const handleLikeRequest = async ({ post_id, token }) => {
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                // "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
             },
         }
     );
@@ -36,7 +36,7 @@ const handleLikeRequest = async ({ post_id, token }) => {
 
 export default function PostCard({ post }) {
     const { user } = useAuthContext();
-    const { post_id } = useParams();
+    // const { post_id } = useParams();
     const [liked, setLiked] = React.useState(
         post.likes.find((u) => u === user.username)
     );
@@ -53,7 +53,7 @@ export default function PostCard({ post }) {
     });
 
     function handleLike() {
-        mutate({ post_id, token: user.token });
+        mutate({ post_id: post._id, token: user.token });
     }
 
     return (

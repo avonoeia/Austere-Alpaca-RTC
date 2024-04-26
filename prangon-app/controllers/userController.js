@@ -157,7 +157,7 @@ async function userSignup(req, res) {
 
 
     if (isVerified !== true) {
-        return 
+        return res.status(400).json({ error: "Please verify your email first." });
     }
 
     try {
@@ -176,7 +176,7 @@ async function userLogin(req, res) {
     const { email, password } = req.body;
 
     console.log("Hit registered at userLogin controller");
-    console.log(email, password)
+    console.log(email)
     try {
         const user = await User.login(email, password);
 
@@ -184,7 +184,7 @@ async function userLogin(req, res) {
 
         res.status(200).json({ username: user.username, token });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         res.status(401).json({ error: err.message });
     }
 }
@@ -214,11 +214,11 @@ async function getUserProfile(req, res) {
 
 async function followUnfollow(req, res) {
     const { username } = req.user
-    const { followUsername } = req.params
-
+    const { user_id } = req.params
+    console.log(req.params)
     try {
         let user = await User.findOne({ username: username })
-        user.following = user.following.includes(followUsername) ? user.following.filter(u => u !== followUsername) : [...user.following, followUsername]
+        user.following = user.following.includes(user_id) ? user.following.filter(u => u !== user_id) : [...user.following, user_id]
         await user.save()
         return res.status(200).json({message: "Follow/Unfollow successful"})
     } catch (e) {

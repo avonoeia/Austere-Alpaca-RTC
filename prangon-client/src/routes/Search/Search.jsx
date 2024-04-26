@@ -4,10 +4,13 @@ import PersonIcon from "@mui/icons-material/Person";
 import Stack from "@mui/material/Stack";
 import PostCard from "../../components/PostCard";
 
+import { useNavigate } from "react-router-dom"
+
 export default function Search() {
     const [search, setSearch] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
     const [searchResults, setSearchResults] = React.useState([]);
+    const navigateTo = useNavigate()
 
     async function handleSearchChange(event) {
         setSearch(event.target.value);
@@ -71,6 +74,11 @@ export default function Search() {
                                                             color: "#000",
                                                         },
                                                     }}
+                                                    onClick={() =>
+                                                        navigateTo(
+                                                            `/app/profile/${user.username}`
+                                                        )
+                                                    }
                                                 >
                                                     {user.profile_picture ? (
                                                         <img
