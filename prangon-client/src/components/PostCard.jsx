@@ -7,89 +7,187 @@ import { CardActionArea, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Avatar from "@mui/material/Avatar";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import CommentIcon from "@mui/icons-material/Comment";
 import PersonIcon from "@mui/icons-material/Person";
 import CardActions from "@mui/material/CardActions";
-import { useNavigate } from "react-router-dom";
+import Divider from "@mui/material/Divider";
+import { useNavigate, useParams, redirect } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useMutation } from "@tanstack/react-query";
 
-export default function PostCard() {
+const handleLikeRequest = async ({ post_id, token }) => {
+    const response = await fetch(
+        `${import.meta.env.VITE_API_POST_ADD_REMOVE_LIKE}${post_id}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+    const responseData = await response.json();
+    if (response.ok) return responseData;
+
+    console.log("response is", responseData);
+    throw new Error(responseData.error);
+};
+
+export default function PostCard({ post }) {
+    const { user } = useAuthContext();
+    const { post_id } = useParams();
+    const [liked, setLiked] = React.useState(
+        post.likes.find((u) => u === user.username)
+    );
     const navigateTo = useNavigate();
 
+    const { mutate, isPending, error } = useMutation({
+        mutationFn: handleLikeRequest,
+        onMutate: () => {
+            setLiked((prev) => !prev);
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
+    function handleLike() {
+        mutate({ post_id, token: user.token });
+    }
+
     return (
-        <Card
-            raised={true}
-            sx={{
-                backgroundColor: "#1e1e1e",
-                width: "100%",
-                borderRadius: "5px",
-            }}
-        >
-            {/* <CardActionArea> */}
-                <CardActions
-                    onClick={(e) =>
-                        (location.href =
-                            "https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/438204827_844400087728716_1645927507429381317_n.jpg?stp=dst-jpg_p526x296&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHoEOW3FaE3N6yyVpooToMg7dn_9UANXAnt2f_1QA1cCbaxSvlq9rJi2ogKvMEpT0G1VwEYL1UNYy_3kFMFUj3j&_nc_ohc=PC9vAKXHw9cAb5SnLt7&_nc_ht=scontent.fdac99-1.fna&oh=00_AfCQ9I7V9s87JmLAZ0rc4nj6hC58P1hNeUWh7OUfF2HCdQ&oe=662D5271")
-                    }
-                >
-                    <CardMedia
-                        component="img"
-                        image="https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/438204827_844400087728716_1645927507429381317_n.jpg?stp=dst-jpg_p526x296&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHoEOW3FaE3N6yyVpooToMg7dn_9UANXAnt2f_1QA1cCbaxSvlq9rJi2ogKvMEpT0G1VwEYL1UNYy_3kFMFUj3j&_nc_ohc=PC9vAKXHw9cAb5SnLt7&_nc_ht=scontent.fdac99-1.fna&oh=00_AfCQ9I7V9s87JmLAZ0rc4nj6hC58P1hNeUWh7OUfF2HCdQ&oe=662D5271"
-                        alt="green iguana"
-                    />
-                </CardActions>
-                <CardContent sx={{ color: "secondary.main" }}>
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        sx={{ paddingBottom: 1 }}
-                    >
-                        <Avatar alt="Remy Sharp">
-                            <PersonIcon fontSize="large" color="secondary" />
-                        </Avatar>
-                        <Stack
-                            direction="column"
-                            spacing={0}
-                            sx={{ display: "flex", alignItems: "center" }}
-                        >
-                            <Typography
-                                gutterBottom
-                                variant="h6"
-                                component="div"
-                                sx={{ p: 0, m: 0, fontSize: "16px" }}
-                            >
-                                Lizard
-                            </Typography>
-                            <Typography variant="p" component="div">
-                                @lizard
-                            </Typography>
-                        </Stack>
-                    </Stack>
-                    <Typography sx={{ textAlign: "left" }} variant="body2">
-                        Lizards are a widespread group of squamate reptiles,
-                        with over 6,000 species, ranging across all continents
-                        except Antarctica
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Stack
+        <>
+            {post && (
+                <>
+                    <Card
+                        raised={true}
                         sx={{
-                            color: "secondary.main",
+                            backgroundColor: "#1e1e1e",
                             width: "100%",
-                            display: "flex",
-                            justifyContent: "space-around",
+                            borderRadius: "5px",
                         }}
-                        direction="row"
-                        spacing={2}
                     >
-                        <IconButton>
-                            <ThumbUpIcon color="secondary" />
-                        </IconButton>
-                        <IconButton onClick={(e) => navigateTo("post/abc1234")}>
-                            <CommentIcon color="secondary" />
-                        </IconButton>
-                    </Stack>
-                </CardActions>
-            {/* </CardActionArea> */}
-        </Card>
+                        {/* <CardActionArea> */}
+                        <CardActions>
+                            {post.post_image_content && (
+                                <CardMedia
+                                    component="img"
+                                    image={`${import.meta.env.VITE_API_ROOT}${
+                                        post.post_image_content
+                                    }`}
+                                    onClick={(e) =>
+                                        (href.location = `${
+                                            import.meta.env.VITE_API_ROOT
+                                        }${post.post_image_content}`)
+                                    }
+                                    alt="green iguana"
+                                />
+                            )}
+                        </CardActions>
+                        <CardContent sx={{ color: "secondary.main" }}>
+                            <Stack
+                                direction="row"
+                                spacing={2}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    paddingBottom: 1,
+                                }}
+                            >
+                                <Avatar alt="Remy Sharp">
+                                    <PersonIcon
+                                        fontSize="large"
+                                        color="secondary"
+                                    />
+                                </Avatar>
+                                <Stack
+                                    direction="column"
+                                    spacing={0}
+                                    // sx={{ display: "flex", alignItems: "center" }}
+                                >
+                                    <Typography
+                                        gutterBottom
+                                        variant="h6"
+                                        component="div"
+                                        sx={{
+                                            p: 0,
+                                            m: 0,
+                                            fontSize: "16px",
+                                            textAlign: "left",
+                                            "&:hover": {
+                                                cursor: "pointer",
+                                                textDecoration: "underline",
+                                            },
+                                        }}
+                                        onClick={(e) =>
+                                            navigateTo(
+                                                `profile/${post.username}`
+                                            )
+                                        }
+                                    >
+                                        {post.author_name}
+                                    </Typography>
+
+                                    <Typography
+                                        variant="p"
+                                        component="div"
+                                        sx={{
+                                            textAlign: "left",
+                                            fontSize: "12px",
+                                            "&:hover": {
+                                                cursor: "pointer",
+                                            },
+                                        }}
+                                        onClick={(e) =>
+                                            navigateTo(
+                                                `profile/${post.username}`
+                                            )
+                                        }
+                                    >
+                                        @{post.username}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+                            <Typography
+                                sx={{ textAlign: "left" }}
+                                variant="body2"
+                            >
+                                {post.post_text_content}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Stack
+                                sx={{
+                                    color: "secondary.main",
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "space-around",
+                                }}
+                                direction="row"
+                                spacing={2}
+                            >
+                                <IconButton onClick={handleLike}>
+                                    {liked ? (
+                                        <ThumbUpIcon color="secondary" />
+                                    ) : (
+                                        <ThumbUpOffAltIcon color="secondary" />
+                                    )}
+                                </IconButton>
+                                <IconButton
+                                    disabled={!location.href.endsWith("/app")}
+                                    onClick={(e) => {
+                                        navigateTo(`post/${post._id}`);
+                                    }}
+                                >
+                                    <CommentIcon color="secondary" />
+                                </IconButton>
+                            </Stack>
+                        </CardActions>
+                        {/* </CardActionArea> */}
+                    </Card>
+                </>
+            )}
+        </>
     );
 }

@@ -35,7 +35,9 @@ import Home from "./pages/Home/Home";
 import Search from "./routes/Search/Search";
 import AppIndex from "./routes/AppIndex/AppIndex";
 import Post from "./routes/Post/Post";
-import PostView from "./routes/Post/PostView";
+import PostView from "./routes/Post/PostView"
+import UserProfile from "./routes/Profile/UserProfile";
+
 
 const router = createBrowserRouter([
     {
@@ -114,6 +116,10 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: <div>Profile</div>,
             },
+            {
+                path: "profile/:username",
+                element: <UserProfile />,
+            }
         ],
     },
 ]);

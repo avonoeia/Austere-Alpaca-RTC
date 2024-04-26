@@ -36,7 +36,6 @@ export default function AppIndex() {
         },
     });
 
-    console.log(data);
 
     return (
         <>
@@ -115,14 +114,24 @@ export default function AppIndex() {
 
                     {data && <Container sx={{ my: 2, px: 0 }} maxWidth="sm">
                         <Stack direction="column" spacing={2}>
+                            {
+                                data.posts.map((post) => (
+                                    <PostCard
+                                        key={post._id}
+                                        post={post}
+                                        navigateTo={navigateTo}
+                                    />
+                                ))
+                            }
+
+                            {/* <PostCard />
                             <PostCard />
                             <PostCard />
                             <PostCard />
                             <PostCard />
                             <PostCard />
                             <PostCard />
-                            <PostCard />
-                            <PostCard />
+                            <PostCard /> */}
                         </Stack>
                     </Container>}
                 </>

@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Posts = require("../models/postModel");
 const jwt = require("jsonwebtoken");
 const { createClient } = require("redis");
 const { sendVerificationEmail } = require("../helpers/sendValidationCode");
@@ -188,7 +189,22 @@ async function userLogin(req, res) {
     }
 }
 
+async function getUserProfile(req, res) {
+    const { username } = req.user
+
+    try {
+        const user = await User.findOne({ username: username })
+        const posts = await Posts.find({ username: username })
+
+        if (!user) return res.status(400).json({error: "User not found"})
+        return res.status(200).json({user, posts})
+    } catch (err) {
+        return res.status(400).json({error: err.message})
+    }
+}
+
 module.exports = {
+    getUserProfile,
     userEmailVerification1,
     userEmailVerification2,
     userSignup,

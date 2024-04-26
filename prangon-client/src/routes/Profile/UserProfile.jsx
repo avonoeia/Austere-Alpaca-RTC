@@ -18,13 +18,12 @@ export default function UserProfile() {
     const { user } = useAuthContext();
     const [data, setData] = React.useState(null)
     let { post_id } = useParams();
-    const [comment, setComment] = React.useState("")
 
     const { isLoading, isError, error } = useQuery({
-        queryKey: ["post"],
+        queryKey: ["profile"],
         queryFn: async () => {
             const res = await fetch(
-                `${import.meta.env.VITE_API_GET_POST}${post_id}`,
+                `${import.meta.env.VITE_API_GET_USER_PROFILE}${username}`,
                 {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
@@ -39,28 +38,6 @@ export default function UserProfile() {
         },
     });
 
-    async function submitComment() {
-        const res = await fetch(`${import.meta.env.VITE_API_POST_ADD_COMMENT}${post_id}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-            },
-            body: JSON.stringify({
-                username: user.username,
-                comment_text_content: comment,
-            }),
-        });
-        if (res.ok) {
-            const commentData = await res.json();
-            setData(prevData => ({
-                ...prevData,
-                comments: [ commentData, ...prevData.comments]
-            }))
-            setComment("")
-        }
-    }
-
     console.log(data)
 
     return (
@@ -71,7 +48,6 @@ export default function UserProfile() {
                 <>
                     {data && (
                         <>
-                            <PostCard post={data.post} />
                             <Stack
                                 direction="row"
                                 spacing={2}
