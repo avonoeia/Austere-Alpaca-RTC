@@ -13,9 +13,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLogout } from "../hooks/useLogout";
 
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 
 export default function MenuAppBar() {
+    const { user } = useAuthContext();
     const { logout } = useLogout();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate();
@@ -38,12 +40,14 @@ export default function MenuAppBar() {
     };
 
     const handleRedirectToProfile = () => {
-        navigate("profile");
+        navigate(`/app/profile/${user.username}`);
     };
 
     const handleLogout = () => {
         logout();
     };
+
+    console.log(user)
 
     return (
         <Box sx={{ width: "100%", flexGrow: 1 }}>

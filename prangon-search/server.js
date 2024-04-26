@@ -54,7 +54,7 @@ app.get("/search", async (req, res) => {
 
     userSearchPipeline.push({
         $project: {
-            _id: 0,
+            _id: 1,
             score: { $meta: "searchScore" },
             name: 1,
             email: 1,
@@ -91,6 +91,7 @@ app.get("/search", async (req, res) => {
             author_name: 1,
             post_text_content: 1,
             post_image_content: 1,
+            likes: 1,
             createdAt: 1,
         },
     });
