@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const requireAuth = require('../middlewares/requireAuth')
 const {
+    followUnfollow,
     getUserProfile,
     userEmailVerification1,
     userEmailVerification2,
@@ -18,7 +19,8 @@ router.post('/login', userLogin)
 router.post('/check-unique-username', checkUniqueUsername)
 
 router.use(requireAuth)
-router.get('/user-profile', getUserProfile)
+router.get('/user-profile/:userRequested', getUserProfile)
+router.post('/follow-unfollow/:user_id', followUnfollow)
 
 // router.use(requireAuth)
 

@@ -6,20 +6,22 @@ import Stack from "@mui/material/Stack";
 import PersonIcon from "@mui/icons-material/Person";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 
-import CommentCard from "../../components/CommentCard"
+import CommentCard from "../../components/CommentCard";
 
 export default function UserProfile() {
     const { user } = useAuthContext();
-    const [data, setData] = React.useState(null)
-    let { post_id } = useParams();
+    const [data, setData] = React.useState(null);
+    let { username } = useParams();
+    const [isLoading, setIsLoading] = React.useState(true);
 
-    const { isLoading, isError, error } = useQuery({
+    const { isError, error } = useQuery({
         queryKey: ["profile"],
         queryFn: async () => {
             const res = await fetch(
@@ -33,12 +35,28 @@ export default function UserProfile() {
             if (res.ok) {
                 const data = await res.json();
                 setData(data);
+                setIsLoading(false);
             }
             return res.json();
         },
     });
 
-    console.log(data)
+
+    const handleFollowUnfollow = async () => {
+        const res = await fetch(
+            `${import.meta.env.VITE_API_FOLLOW_UNFOLLOW}/${data.user._id}`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
+        if (res.ok) {
+            const data = await res.json();
+            setData(data);
+        }
+    };
 
     return (
         <>
@@ -60,42 +78,47 @@ export default function UserProfile() {
                                     alignItems: "center",
                                 }}
                             >
-                                <Avatar alt="Remy Sharp">
+                                <Avatar
+                                    sx={{ width: "140px", height: "140px" }}
+                                    alt="Remy Sharp"
+                                >
                                     <PersonIcon
                                         fontSize="large"
                                         color="secondary"
                                     />
                                 </Avatar>
-                            
-                                <input
-                                    type="text"
-                                    style={{
-                                        background: "rgb(30,30,30)",
-                                        padding: "15px 15px",
-                                        border: "none",
-                                        borderRadius: "5px",
-                                        color: "#ebffea",
-                                        fontFamily: "Roboto",
-                                        fontSize: "16px",
-                                        resize: "none",
-                                        width: "100%",
-                                        minHeight: "60px",
-                                    }}
-                                    placeholder="Comment here"
-                                    value={comment}
-                                    onChange={e => {
-                                        setComment(e.target.value)
-                                    }}
-                                />
-                                {/* </Stack> */}
-                                <IconButton onClick={submitComment}>
-                                    <SendIcon color="secondary" />
-                                </IconButton>
+                                <Stack
+                                    sx={{ textAlign: "left", width: "100%" }}
+                                    direction="column"
+                                    spacing={2}
+                                >
+                                    <Typography variant="h2">
+                                        {data.user.name}
+                                    </Typography>
+                                    <Typography
+                                        variant="p"
+                                        sx={{ margin: 0, padding: 0 }}
+                                    >
+                                        @{data.user.username}
+                                    </Typography>
+                                </Stack>
+                                {
+                                    user.username !== data.user.username ? (
+                                    <Button
+                                        onClick={handleFollowUnfollow}
+                                        sx={{ padding: "4px 40px" }}
+                                        size="large"
+                                        variant="contained"
+                                        color="secondary"
+                                    >
+                                        {data.isFollowing ? "Unfollow" : "Follow"}
+                                    </Button>) : ""
+                                }
                             </Stack>
                             <Stack direction="column" spacing={2} sx={{mt: "20px"}}>
     
-                                {data.comments.map((comment) => (
-                                    <CommentCard key={comment.comment_text_content} comment={comment} setData={setData} />
+                                {data.posts.map((post) => (
+                                    <PostCard key={post._id} post={post} />
                                 ))}
                             </Stack>
                         </>

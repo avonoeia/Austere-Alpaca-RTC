@@ -19,8 +19,9 @@ export default function UserProfile() {
     const [data, setData] = React.useState(null)
     let { post_id } = useParams();
     const [comment, setComment] = React.useState("")
+    const [isLoading, setIsLoading] = React.useState(true);
 
-    const { isLoading, isError, error } = useQuery({
+    const { isError, error } = useQuery({
         queryKey: ["post"],
         queryFn: async () => {
             const res = await fetch(
@@ -34,6 +35,7 @@ export default function UserProfile() {
             if (res.ok) {
                 const data = await res.json();
                 setData(data);
+                setIsLoading(false);
             }
             return res.json();
         },
@@ -60,8 +62,6 @@ export default function UserProfile() {
             setComment("")
         }
     }
-
-    console.log(data)
 
     return (
         <>

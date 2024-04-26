@@ -113,10 +113,6 @@ const router = createBrowserRouter([
                 element: <Search />,
             },
             {
-                path: "profile",
-                element: <div>Profile</div>,
-            },
-            {
                 path: "profile/:username",
                 element: <UserProfile />,
             }

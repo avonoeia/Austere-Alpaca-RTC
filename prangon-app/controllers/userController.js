@@ -191,19 +191,43 @@ async function userLogin(req, res) {
 
 async function getUserProfile(req, res) {
     const { username } = req.user
+    const { userRequested } = req.params
 
     try {
-        const user = await User.findOne({ username: username })
-        const posts = await Posts.find({ username: username })
+        const requestee = await User.findOne({ username: username })
 
-        if (!user) return res.status(400).json({error: "User not found"})
-        return res.status(200).json({user, posts})
+        const userRequestedData = await User.findOne({ username: userRequested })
+        // console.log(userRequestedData)
+        
+        const posts = await Posts.find({ username: userRequested })
+        
+
+        const isFollowing = requestee.following.includes(userRequestedData.username) 
+
+        if (!userRequested) return res.status(400).json({error: "User not found"})
+
+        return res.status(200).json({user: userRequestedData, posts, isFollowing})
     } catch (err) {
         return res.status(400).json({error: err.message})
     }
 }
 
+async function followUnfollow(req, res) {
+    const { username } = req.user
+    const { followUsername } = req.params
+
+    try {
+        let user = await User.findOne({ username: username })
+        user.following = user.following.includes(followUsername) ? user.following.filter(u => u !== followUsername) : [...user.following, followUsername]
+        await user.save()
+        return res.status(200).json({message: "Follow/Unfollow successful"})
+    } catch (e) {
+        return res.status(400).json({error: e.message})
+    }
+}
+
 module.exports = {
+    followUnfollow,
     getUserProfile,
     userEmailVerification1,
     userEmailVerification2,

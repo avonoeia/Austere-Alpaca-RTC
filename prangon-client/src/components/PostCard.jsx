@@ -122,7 +122,7 @@ export default function PostCard({ post }) {
                                         }}
                                         onClick={(e) =>
                                             navigateTo(
-                                                `profile/${post.username}`
+                                                `/app/profile/${post.username}`
                                             )
                                         }
                                     >
@@ -141,7 +141,7 @@ export default function PostCard({ post }) {
                                         }}
                                         onClick={(e) =>
                                             navigateTo(
-                                                `profile/${post.username}`
+                                                `/app/profile/${post.username}`
                                             )
                                         }
                                     >
@@ -175,9 +175,9 @@ export default function PostCard({ post }) {
                                     )}
                                 </IconButton>
                                 <IconButton
-                                    disabled={!location.href.endsWith("/app")}
+                                    disabled={false}
                                     onClick={(e) => {
-                                        navigateTo(`post/${post._id}`);
+                                        navigateTo(`/app/post/${post._id}`);
                                     }}
                                 >
                                     <CommentIcon color="secondary" />
